@@ -1,20 +1,20 @@
 'use strict';
+function init () {
 	var market = document.getElementById('market'),
-		basket = document.getElementById('basket'),
-		onMarketItemClick,
-		onBasketItemClick,
-		fruits = document.getElementsByClassName('fruit');
+	basket = document.getElementById('basket'),
+	onMarketItemClick,
+	onBasketItemClick,
+	fruits = document.getElementsByClassName('fruit');
 
 	function onMarketItemClick () {
 		var clickedFruit = this;
-		market.appendChild(clickedFruit);   
-		console.dir(clickedFruit);
+		basket.appendChild(clickedFruit);   
 		clickedFruit.onclick = onBasketItemClick;
 	};
 
 	function onBasketItemClick () {
 		var clickedFruit = this;
-		basket.appendChild(clickedFruit);
+		market.appendChild(clickedFruit);
 		clickedFruit.onclick = onMarketItemClick;
 	}
 
@@ -22,3 +22,4 @@
 		fruits[i].onclick = onMarketItemClick;
 	}
 
+}
