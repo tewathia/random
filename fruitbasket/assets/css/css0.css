@@ -1,0 +1,14 @@
+@charset 'UTF-8';
+
+#market, #basket {
+    border: 1px solid black;
+    height: 200px;
+    margin: 10px auto;
+    padding: 5px;
+    width: 550px;
+}
+
+img.fruit {
+    height: 100px;
+    width: 100px;
+}
