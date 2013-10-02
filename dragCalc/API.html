@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>API</title>
+	<style>
+	div{
+		float: left;
+		/*border: 1px dotted black;*/
+	}
+	#numbers, #operators{
+		width: 3%;
+
+	}
+	#numbers>img, #operators>img{
+		display: block;
+		text-decoration: none;
+		width: 40px;
+		height: 40px;
+	}
+	div>span{
+		display: block;
+	}
+
+	#wrapper{
+		width: 90%;
+	}
+	#calculator{
+		margin: 0 auto;
+		width:50%;
+		margin-left: 25%;
+		/*border: 2px dotted red;*/
+	}
+	#calculator>div{
+		width: 120px;
+		height: 120px;
+		vertical-align: middle;
+		padding: 10px;
+	}
+	#calculator>div>span{
+		padding: 10px;
+		width: 80px;
+		height: 65px;
+		border: 1px solid rgba(100, 100, 100, 0.5);
+		margin: 0 auto;
+		padding-top: 25px;
+	}
+	#location, #hits{
+		width: 49%;
+		text-align: center;
+	}
+
+	</style>
+</head>
+<body>
+	<div id="numbers">
+		<img draggable src="assets/images/cover.jpg" alt= "1" id="num1" class = "draggable number" value="1">1    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "2" id="num2" class = "draggable number" value="2">2    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "3" id="num3" class = "draggable number" value="3">3    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "4" id="num4" class = "draggable number" value="4">4    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "5" id="num5" class = "draggable number" value="5">5    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "6" id="num6" class = "draggable number" value="6">6    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "7" id="num7" class = "draggable number" value="7">7    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "8" id="num8" class = "draggable number" value="8">8    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "9" id="num9" class = "draggable number" value="9">9    /\</img>
+	</div>
+	<div id="wrapper">
+	<div id="calculator">
+		<div id="firstNumDiv"><span id="firstNumSpan">First Number</span></div>
+		<div id="operatorDiv"><span id="operatorSpan">Operator</span></div>
+		<div id="secondNumDiv"><span id="secondNumSpan">Second Number</span></div>
+		<div id="resultDiv"><span id="resultSpan"></span></div>
+	</div>
+
+	<div id="location">Your Location:<span></span></div>
+	<div id="hits">Number of hits:<span></span></div>
+	</div>
+	<div id="operators">
+		<img draggable src="assets/images/cover.jpg" alt= "+" id="opAdd" class = "draggable operator" value="+">+    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "-" id="opSubtract" class = "draggable operator" value="-">-    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "*" id="opMultiply" class = "draggable operator" value="*">*    /\</img>
+		<img draggable src="assets/images/cover.jpg" alt= "/" id="opDivide" class = "draggable operator" value="/">/    /\</img>
+	</div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.ndd.js"></script>
+	<script type="text/javascript" src="assets/js/api.drag.js"></script>
+	<script type="text/javascript" src="assets/js/api.geoLocation.js"></script>
+	<script type="text/javascript" src="assets/js/api.sessionStorage.js"></script>
+
+</body>
+</html>
