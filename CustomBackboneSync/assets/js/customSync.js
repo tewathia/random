@@ -42,15 +42,15 @@
     		else {
     			localStorage.setItem('modelMemory', JSON.stringify(model.attributes));
     		}
-    		closer();
+    		// closer();
     	}
     	else if (method == "read"){
-    		closer();
+    		// closer();
     		console.log('!Fetch!');
     		return _memory;
     	}
     	else if (method == "delete"){
-    		closer();
+    		// closer();
     		console.log('!Destroy!');
     		localStorage.removeItem('modelMemory');
     	}
