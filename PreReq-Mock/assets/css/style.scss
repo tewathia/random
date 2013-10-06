@@ -1,0 +1,42 @@
+$marginDefault: 0 auto;
+$rowWidth: 654px;
+$cellCount:3;
+$cellWidth: $rowWidth/$cellCount;
+
+$appBorder:1px solid black;
+$tableBorder: 1px solid blue;
+$cellBorder: 2px dotted silver;
+
+#list{
+	margin: $marginDefault;
+	width: $rowWidth;
+	padding: 20px;
+	background: #EEEEEE;
+	border-radius: 14px;
+
+	#viewForm{
+		margin-left: 90px;
+
+		input{
+			border-radius: 5px;
+		}
+	}
+	table{
+		box-shadow: 2px 2px 2px;
+		// border: $tableBorder;
+		border-radius: 14px;
+		
+		background: #CCCCCC;
+		margin-top: 30px;
+		border-collapse: collapse;
+
+		td, th{
+			width: $cellWidth;
+			text-align: center;
+		}
+		th{
+			border-bottom: $cellBorder;
+		}
+	}
+
+}

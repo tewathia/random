@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mocha</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <div id="list" style="display:none"><h3>Currency Database</h3></div>
+
+
+  <script id="rowTemp" type="text/handlebars-x-template">
+  <th>{{_id}}</th>
+  <th>{{description}}</th>
+  <th>{{update}}</th>
+  <th>{{by}}</th>
+  </script>
+
+  <script id="headerTemp" type="text/template">
+  <tr>
+  <th>ID</th>
+  <th>Description</th>
+  <th>Last Update</th>
+  <th>By</th>
+  </tr>
+  </script>
+  <script id="formTemp" type="text/template">
+
+  <div id="viewForm">
+  <span>ID:</span>
+  <input type="text" name="" id="idInput">
+  <span>Description:</span>
+  <input type="text" name="" id="descInput">
+  <button id="addEmp">Add</button>
+  </div>
+
+
+  </script>
+  <script src="assets/lib/mocha.js"></script>
+  <script src="assets/lib/sinon.js"></script>
+  <script src="assets/lib/handlebars.js"></script>
+  <script data-main="testMain" src="assets/lib/require.js"></script>
+  <script>mocha.setup('bdd')</script>
+
+</body>
+</html>

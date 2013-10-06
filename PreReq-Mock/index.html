@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Currencies</title>
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+
+
+	<div id="list"><h3>Currency Database</h3></div>
+
+
+	<script id="rowTemp" type="text/handlebars-x-template">
+	<th>{{_id}}</th>
+	<th>{{description}}</th>
+	<th>{{update}}</th>
+	<th>{{by}}</th>
+	</script>
+
+	<script id="headerTemp" type="text/template">
+	<tr>
+	<th>ID</th>
+	<th>Description</th>
+	<th>Last Update</th>
+	<th>By</th>
+	</tr>
+	</script>
+	<script id="formTemp" type="text/template">
+
+	<div id="viewForm">
+	<span>ID:</span>
+	<input type="text" name="" id="idInput">
+	<span>Description:</span>
+	<input type="text" name="" id="descInput">
+	<button id="addEmp">Add</button>
+	</div>
+
+
+	</script>
+	<script src="assets/lib/handlebars.js"></script>
+	<script data-main="main" src="assets/lib/require.js"></script>
+</body>
+</html>
