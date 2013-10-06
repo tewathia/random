@@ -39,8 +39,8 @@ require([
 				chai.assert.isTrue(true);
 			});
 			it("can fetch Currencies", function(){
-				chai.assert.isTrue(myCurrencyCollection.fetch() instanceof Object);
-				chai.assert.isTrue(myCurrencyCollection.models.length > 0)
+				chai.assert.isTrue(myCurrencyCollection.fetch() instanceof Object, 'not an object');
+				chai.assert.isTrue(myCurrencyCollection.models.length > 0, 'zero model length')
 			});
 			it("can add a Currency", function(){
 				myCurrencyCollection.fetch();

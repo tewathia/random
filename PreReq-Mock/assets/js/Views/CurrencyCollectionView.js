@@ -31,7 +31,19 @@ define([
             var _now =  date.getFullYear() + "-" + ("0" + (date.getMonth())).slice(-2)
             + "-" + ("0" + date.getDate()).slice(-2) + "T" + ("0" + (date.getHours())).slice(-2) + ":" +
             ("0" + (date.getMinutes())).slice(-2) + ":" + ("0" + (date.getSeconds())).slice(-2) + ".000" + "Z";
-			this.collection.create({_id: newId, description: newDesc, update: _now, by: 'system'}).save();
+			var _newCurrency = {
+				_id: newId,
+				description: newDesc,
+				update: _now,
+				by: "sytem"
+			}
+			if(newId == ""){
+				delete _newCurrency._id;
+			}
+			if(newDesc == ""){
+				delete _newCurrency.description;
+			}
+			this.collection.create(_newCurrency).save();
 		}
 
 	});
