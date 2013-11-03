@@ -138,5 +138,160 @@ var quant = {
 			console.log('Your guess ' + guess + ' contains ' + _cowCount + ' Cow' + (_cowCount===1?'':'s') + ' and ' + _bullCount + ' Bull' + (_bullCount===1?'':'s') + '.');
 			return _finalCountObj;
 		}
+	},
+
+	Sudoku: function(ProblemArray) {
+		var problem = [];
+		this.fillerArray = [];
+		for (var rowInput in ProblemArray) {
+			var row = [];
+			var rowArray = ProblemArray[rowInput];
+			for (var cellInput in rowArray) {
+				var cell = rowArray[cellInput]
+				var cellObj = {
+					value: cell,
+					state: (cell===0?'Blank':'Given')
+				};
+				row.push(cellObj);
+				// console.log(cellObj);
+			}
+			problem.push(row);
+		}
+		this.checkSolution = function(sudoku) {
+			var _isCorrect = true;
+			var _sum;
+			var _checkRow = function(row) {
+				_sum = 0;
+				for (var i in sudoku[row]) {
+					_sum += sudoku[row][i].value;
+				}
+				if (_sum !== 45) {
+					_isCorrect = false;
+				}
+			};
+			var _checkColumn = function(column) {
+				_sum = 0;
+				for (var i in sudoku) {
+					_sum += sudoku[i][column].value;
+				}
+				if (_sum !== 45) {
+					_isCorrect = false;
+				}
+			};
+			var _checkBox = function(box) {
+				var x =	(box%3)*3,
+				y = (Math.floor(box/3))*3;
+				_sum = 0;
+				for (var i = x; i < x+3; i++) {
+					for(var j = y; j < y+3; j++) {
+						_sum += sudoku[i][j].value;
+					}
+				}
+				if (_sum !== 45) {
+					_isCorrect = false;
+				}
+			};
+
+			for (var i = 0; i < 9; i++) {
+				_checkRow(i);
+				_checkColumn(i);
+				_checkBox(i);
+			}
+
+			return _isCorrect;
+		}
+
+		this.id = Math.floor(Math.random()*1000);
+
+		this.show =  function()  {
+			if($('.sudokuTable'+this.id).length > 0) {
+				this.remove();
+			}
+			var formattedSudoku = '';
+			for (var row in problem) {
+				formattedSudoku+='<tr>';
+				for (var cell in problem[row]) {
+					var cellObj = problem[row][cell];
+					formattedSudoku+= '<td class="' + cellObj.state + '">' + cellObj.value + '</td>';
+				}
+				formattedSudoku+='</tr>';
+			}
+			var table = $('<table>').attr('class', 'sudokuTable'+this.id).html(formattedSudoku);
+			table.appendTo($('body'));
+			return problem;
+		}
+
+		this.remove = function() {
+			$('.sudokuTable' + this.id).remove();
+		}
+
+		this.iterations = 0;
+		this.stackCount = 0;
+
+		this.solve =  function()  {
+			this.iterations++;
+			var attempt = problem;
+			if (!this.fillerArray.length) {
+				console.log('empty');
+				for (var row in attempt) {
+					row = attempt[row];
+					var _remArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+					for (var i in row) {
+						var cell = row[i];
+						if (cell.state === 'Given') {
+							_remArr.splice(_remArr.indexOf(cell.value), 1);
+						}
+					}
+					this.fillerArray.push(_remArr);
+				}
+			}
+			var fillerArray = [];
+			for (var i in this.fillerArray) {
+				fillerArray[i] = this.fillerArray[i].slice(0);
+			}
+			var _fillRow = function(row, index) {
+				var _remArr = fillerArray[index];
+				// console.log(_remArr);
+				for (var i in row) {
+					var cell = row[i];
+					if (cell.state !== 'Given') {
+						cell.state = 'Solved';
+						var _index = Math.floor(Math.random()*_remArr.length);
+						cell.value = _remArr[_index];
+						_remArr.splice(_index, 1);
+					}
+				}
+			}
+			for (var i in attempt) {
+				// console.log(i, 'attempt');
+				_fillRow(attempt[i], i);
+			// console.log(attempt[i]);
+		}
+		var isSolved = this.checkSolution(attempt);
+		// console.log(isSolved); 
+		if (isSolved) {
+			var solution = attempt;
+			this.show();
+			console.log('!Solved!', 'stack', this.stackCount, 'iterations', this.iterations+this.stackCount*9630, solution);
+			this.iterations = 0;
+			this.stackCount = 0;
+		}
+		else {
+			// console.log('!Not Solved');
+			if (this.iterations === 9630) {
+				var that = this;
+				setTimeout(function() {
+					that.show();
+					that.iterations = 0;
+					that.stackCount++;
+					that.solve();
+				}, 1);
+			}
+			else {
+				this.solve();
+			}
+		}
 	}
+	this.show();
+}
 };
