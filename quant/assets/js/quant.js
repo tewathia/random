@@ -285,6 +285,13 @@ var quant = {
 			lSIC['C' + this.complexity] = lSIC['C' + this.complexity] || [];
 			lSIC['C' + this.complexity].push(totalIterations);
 			localStorage.setItem('SudokuIterations', JSON.stringify(lSIC));
+			var that = this;
+			if (lSIC['C' + this.complexity].length < 100) {
+				console.log(lSIC['C' + this.complexity].length);
+				setTimeout(function () {
+					that.solve();
+				}, 1)
+			}
 		}
 		else {
 			// console.log('!Not Solved');
@@ -301,6 +308,9 @@ var quant = {
 				this.solve();
 			}
 		}
+	}
+	this.getStats = function() {
+		return JSON.parse(localStorage.getItem('SudokuIterations'));
 	}
 	this.show();
 }
