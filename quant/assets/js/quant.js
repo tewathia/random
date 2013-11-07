@@ -143,6 +143,7 @@ var quant = {
 	Sudoku: function(ProblemArray) {
 		var problem = [];
 		this.fillerArray = [];
+		this.complexity = 81;
 		for (var rowInput in ProblemArray) {
 			var row = [];
 			var rowArray = ProblemArray[rowInput];
@@ -152,6 +153,9 @@ var quant = {
 					value: cell,
 					state: (cell===0?'Blank':'Given')
 				};
+				if (cellObj.state == 'Given') {
+					this.complexity--;
+				}
 				row.push(cellObj);
 				// console.log(cellObj);
 			}
@@ -277,8 +281,9 @@ var quant = {
 			console.log('!Solved!', 'stack', this.stackCount, 'iterations', totalIterations, solution);
 			this.iterations = 0;
 			this.stackCount = 0;
-			var lSIC = JSON.parse(localStorage.getItem('SudokuIterations')) || [];
-			lSIC.push(totalIterations);
+			var lSIC = JSON.parse(localStorage.getItem('SudokuIterations')) || {};
+			lSIC['C' + this.complexity] = lSIC['C' + this.complexity] || [];
+			lSIC['C' + this.complexity].push(totalIterations);
 			localStorage.setItem('SudokuIterations', JSON.stringify(lSIC));
 		}
 		else {
