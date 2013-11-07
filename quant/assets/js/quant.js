@@ -268,17 +268,22 @@ var quant = {
 			// console.log(attempt[i]);
 		}
 		var isSolved = this.checkSolution(attempt);
+		var maxStackSize = 5000;
 		// console.log(isSolved); 
 		if (isSolved) {
 			var solution = attempt;
+			var totalIterations = this.iterations+this.stackCount*maxStackSize;
 			this.show();
-			console.log('!Solved!', 'stack', this.stackCount, 'iterations', this.iterations+this.stackCount*9630, solution);
+			console.log('!Solved!', 'stack', this.stackCount, 'iterations', totalIterations, solution);
 			this.iterations = 0;
 			this.stackCount = 0;
+			var lSIC = JSON.parse(localStorage.getItem('SudokuIterations')) || [];
+			lSIC.push(totalIterations);
+			localStorage.setItem('SudokuIterations', JSON.stringify(lSIC));
 		}
 		else {
 			// console.log('!Not Solved');
-			if (this.iterations === 9630) {
+			if (this.iterations === maxStackSize) {
 				var that = this;
 				setTimeout(function() {
 					that.show();
