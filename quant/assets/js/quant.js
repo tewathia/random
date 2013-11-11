@@ -114,10 +114,11 @@ var quant = {
 						_cows++;
 						if (_tBGIndex === _gIndex) {
 							_bulls++;
+							_cows--;
 						}
 					}
 				}
-				_countObj['Cows'] = _cows-_bulls;
+				_countObj['Cows'] = _cows;
 				_countObj['Bulls'] = _bulls;
 				return _countObj;
 			};
