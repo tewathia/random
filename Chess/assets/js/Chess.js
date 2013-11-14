@@ -48,6 +48,9 @@ function Chess() {
 				$('img', element).attr('src', 'assets/images/WK.ico').show();
 			}
 		});
+		$('tr:nth-of-type(3)>td, tr:nth-of-type(4)>td, tr:nth-of-type(5)>td, tr:nth-of-type(6)>td').each(function(index, element) {
+				$('img', element).attr('src', '').hide();
+		});
 	};
 	this.depopulate = function() {
 		$('td').each(function(index, element) {
@@ -64,10 +67,10 @@ function Chess() {
 		return true;
 	};
 	this.play = function() {
-		var me = this;
-		var _pick;
-		var _place;
-		var _move = {
+		var me = this,
+			_pick,
+			_place,
+			_move = {
 			from: null,
 			to: null,
 			piece: null,
