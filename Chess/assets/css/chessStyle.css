@@ -1,0 +1,20 @@
+table {
+	border: 40px solid black;
+}
+td {
+	margin: 0px;
+	height: 50px;
+	width: 50px;	
+}
+img {
+	width: 45px;
+	height: 45px;
+	display: none;
+}
+tr:nth-of-type(odd)>td:nth-of-type(even), tr:nth-of-type(even)>td:nth-of-type(odd) {
+	background: black;
+}
+span  {
+	height: 40px;
+	width: 40px;
+}
