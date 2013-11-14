@@ -9,7 +9,7 @@ function Chess() {
 		for (var i = 0; i < 8; i++) {
 			row = $('<tr>');
 			for (var j = 0; j < 8; j++) {
-				$('<td>').attr('class', String.fromCharCode(65 + j) + (8 - i)).append('<img src=""></img>').appendTo(row);
+				$('<td>').attr('class', String.fromCharCode(65 + j) + (8 - i)).append('<img draggable="true" src=""></img>').appendTo(row);
 			}
 			board.append(row);
 		}
@@ -61,12 +61,6 @@ function Chess() {
 		$('table', DOMNode).hide();
 	};
 	this.validateMove = function(moveObj) {
-		_moveList.push({
-			from: moveObj.from,
-			to: moveObj.to,
-			piece: moveObj.piece,
-			capture: moveObj.capture
-		});
 		return true;
 	};
 	this.play = function() {
@@ -79,18 +73,28 @@ function Chess() {
 			piece: null,
 			capture: null
 		};
-		$('td', DOMNode).on('click', function() {
+		function clickDragDrop() {
 			var _srcLength = $('img', this).attr('src').length;
 			if (_isPicked) {
 				_place = this;
 				_move.to = $(_place).attr('class');
 				_move.piece = $('img', _pick).attr('src')[15];
-				_move.capture = (_srcLength===0)?false:true;
+				_move.capture = (_srcLength === 0) ? false : true;
+				_move.color = $('img', _pick).attr('src')[14];
 				if (me.validateMove(_move)) {
 					_isPicked = false;
 					_pick.style.border = '';
 					$('img', _place).attr('src', $('img', _pick).attr('src')).show();
-					$('img', _pick).attr('src', '').hide();
+					if (_place !== _pick) {
+						_moveList.push({
+							from: _move.from,
+							to: _move.to,
+							piece: _move.piece,
+							color: _move.color,
+							capture: _move.capture
+						});
+						$('img', _pick).attr('src', '').hide();
+					}
 				}
 			} else if (!_isPicked && _srcLength !== 0) {
 				_isPicked = true;
@@ -98,16 +102,19 @@ function Chess() {
 				_move.from = $(_pick).attr('class');
 				_pick.style.border = '1px solid silver';
 			}
-		});
+		}
+		$('td', DOMNode).on('click', clickDragDrop);
+		// $('td', DOMNode).on('dragstart', clickDragDrop);
+		// $('td', DOMNode).on('drop', clickDragDrop);
 	};
 	this.getMoves = function() {
 		var _log = '';
 		for (var i in _moveList) {
 			var move = _moveList[i];
 			if (i % 2 == 0) {
-				_log += ((i / 2 + 1) + '.' + 'White ' + move.piece + ((move.capture===true)?' captures ':' moves ') + move.from + ' to ' + move.to + '...');
+				_log += ((i / 2 + 1) + '.' + ((move.color==='W')?'White ':'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '...');
 			} else {
-				_log += ('Black ' + move.piece + ((move.capture===true)?' captures ':' moves ') + move.from + ' to ' + move.to + '</br>');
+				_log += (((move.color==='W')?'White ':'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
 			}
 		}
 		return {
