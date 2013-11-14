@@ -76,7 +76,8 @@ function Chess() {
 			piece: null,
 			capture: null
 		};
-		function clickDragDrop() {
+		function clickDragDrop(event) {
+			// event.preventDefault();
 			var _srcLength = $('img', this).attr('src').length;
 			if (_isPicked) {
 				_place = this;
@@ -97,6 +98,7 @@ function Chess() {
 							capture: _move.capture
 						});
 						$('img', _pick).attr('src', '').hide();
+						me.getMoves();
 					}
 				}
 			} else if (!_isPicked && _srcLength !== 0) {
@@ -120,6 +122,8 @@ function Chess() {
 				_log += (((move.color==='W')?'White ':'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
 			}
 		}
+		$('.moves').remove();
+		$('<span>').addClass('moves').html(_log).appendTo(DOMNode);
 		return {
 			objects: _moveList,
 			notation: _log
