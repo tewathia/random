@@ -83,7 +83,7 @@ function Chess() {
 				_move.color = $('img', _pick).attr('src')[14];
 				if (me.validateMove(_move)) {
 					_isPicked = false;
-					_pick.style.border = '';
+					_pick.style.backgroundColor = '';
 					$('img', _place).attr('src', $('img', _pick).attr('src')).show();
 					if (_place !== _pick) {
 						_moveList.push({
@@ -100,7 +100,7 @@ function Chess() {
 				_isPicked = true;
 				_pick = this;
 				_move.from = $(_pick).attr('class');
-				_pick.style.border = '1px solid silver';
+				_pick.style.backgroundColor = 'silver';
 			}
 		}
 		$('td', DOMNode).on('click', clickDragDrop);
