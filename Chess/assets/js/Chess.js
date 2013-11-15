@@ -49,7 +49,7 @@ function Chess() {
 			}
 		});
 		$('tr:nth-of-type(3)>td, tr:nth-of-type(4)>td, tr:nth-of-type(5)>td, tr:nth-of-type(6)>td').each(function(index, element) {
-				$('img', element).attr('src', '').hide();
+			$('img', element).attr('src', '').hide();
 		});
 	};
 	this.depopulate = function() {
@@ -71,13 +71,13 @@ function Chess() {
 			_pick,
 			_place,
 			_move = {
-			from: null,
-			to: null,
-			piece: null,
-			capture: null
-		};
-		function clickDragDrop(event) {
-			// event.preventDefault();
+				from: null,
+				to: null,
+				piece: null,
+				capture: null
+			};
+
+		function click() {
 			var _srcLength = $('img', this).attr('src').length;
 			if (_isPicked) {
 				_place = this;
@@ -108,18 +108,53 @@ function Chess() {
 				_pick.style.backgroundColor = 'silver';
 			}
 		}
-		$('td', DOMNode).on('click', clickDragDrop);
-		// $('td', DOMNode).on('dragstart', clickDragDrop);
-		// $('td', DOMNode).on('drop', clickDragDrop);
+		$('td', DOMNode).on('click', click);
+		$('td', DOMNode).on('dragstart', function(event) {
+			var _srcLength = $('img', this).attr('src').length;
+			if (!_isPicked && _srcLength !== 0) {
+				_isPicked = true;
+				_pick = this;
+				_move.from = $(_pick).attr('class');
+				_pick.style.backgroundColor = 'silver';
+			}
+			console.log(this);
+		}).on('dragover', function(event) {
+			event.preventDefault();
+		}).on('drop', function(event) {
+			var _srcLength = $('img', this).attr('src').length;
+			if (_isPicked) {
+				_place = this;
+				_move.to = $(_place).attr('class');
+				_move.piece = $('img', _pick).attr('src')[15];
+				_move.capture = (_srcLength === 0) ? false : true;
+				_move.color = $('img', _pick).attr('src')[14];
+				if (me.validateMove(_move)) {
+					_isPicked = false;
+					_pick.style.backgroundColor = '';
+					$('img', _place).attr('src', $('img', _pick).attr('src')).show();
+					if (_place !== _pick) {
+						_moveList.push({
+							from: _move.from,
+							to: _move.to,
+							piece: _move.piece,
+							color: _move.color,
+							capture: _move.capture
+						});
+						$('img', _pick).attr('src', '').hide();
+						me.getMoves();
+					}
+				}
+			}
+		});
 	};
 	this.getMoves = function() {
 		var _log = '';
 		for (var i in _moveList) {
 			var move = _moveList[i];
 			if (i % 2 == 0) {
-				_log += ((i / 2 + 1) + '.' + ((move.color==='W')?'White ':'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '...');
+				_log += ((i / 2 + 1) + '.' + ((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '...');
 			} else {
-				_log += (((move.color==='W')?'White ':'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
+				_log += (((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
 			}
 		}
 		$('.moves').remove();
