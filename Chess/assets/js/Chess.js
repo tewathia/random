@@ -117,9 +117,12 @@ function Chess() {
 				_move.from = $(_pick).attr('class');
 				_pick.style.backgroundColor = 'silver';
 			}
-			console.log(this);
 		}).on('dragover', function(event) {
 			event.preventDefault();
+			$(this).attr('style', 'background-color:silver');
+		}).on('dragleave', function(event) {
+			event.preventDefault();
+			$(this).attr('style', '');
 		}).on('drop', function(event) {
 			var _srcLength = $('img', this).attr('src').length;
 			if (_isPicked) {
