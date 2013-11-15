@@ -52,6 +52,124 @@ function Chess() {
 			$('img', element).attr('src', '').hide();
 		});
 	};
+	this.validateMove = function(moveObj, type) {
+		var isValidArray = [];
+
+		function pieceMovementValidation(piece) {
+			var isValid = true;
+			isValidArray.push(isValid);
+		}
+		function moveColorValidation() {
+			var isValid = ((moveObj.color === 'W') ? 0 : 1) === (1 - moveObj.toMove);
+			isValidArray.push(isValid);
+		}
+		pieceMovementValidation(moveObj.piece);
+		moveColorValidation();
+		return (isValidArray.indexOf(false) === -1);
+	};
+	this.play = function() {
+		var me = this,
+			_pick,
+			_place,
+			_srcLength,
+			_move = {
+				from: null,
+				to: null,
+				piece: null,
+				capture: null,
+				toMove: null
+			},
+			_toMove = 1;
+
+		function pickPiece() {
+			_isPicked = true;
+			_move.from = $(_pick).attr('class');
+			_pick.style.backgroundColor = 'silver';
+		}
+
+		function placePiece() {
+			_move.to = $(_place).attr('class');
+			_move.piece = $('img', _pick).attr('src')[15];
+			_move.capture = (_srcLength === 0) ? false : true;
+			_move.color = $('img', _pick).attr('src')[14];
+			_move.toMove = _toMove;
+			if (me.validateMove(_move, 'click')) {
+				_isPicked = false;
+				_pick.style.backgroundColor = '';
+				$('img', _place).attr('src', $('img', _pick).attr('src')).show();
+				if (_place !== _pick) {
+					_toMove = (1 - _toMove);
+					_moveList.push({
+						from: _move.from,
+						to: _move.to,
+						piece: _move.piece,
+						color: _move.color,
+						capture: _move.capture,
+						toMove: _toMove
+					});
+					$('img', _pick).attr('src', '').hide();
+					me.getMoves();
+				}
+			} else {
+				_isPicked = false;
+				_pick.style.backgroundColor = '';
+			}
+		}
+
+		function click() {
+			_srcLength = $('img', this).attr('src').length;
+			if (_isPicked) {
+				_place = this;
+				placePiece();
+			} else if (!_isPicked && _srcLength !== 0) {
+				_pick = this;
+				pickPiece();
+			}
+		}
+		$('td', DOMNode).on('click', click);
+		$('td', DOMNode).on('dragstart', function(event) {
+			_srcLength = $('img', this).attr('src').length;
+			if (!_isPicked && _srcLength !== 0) {
+				_pick = this;
+				pickPiece();
+			}
+		}).on('dragover', function(event) {
+			event.preventDefault();
+			$(this).attr('style', 'background-color:silver');
+		}).on('dragleave', function(event) {
+			event.preventDefault();
+			$(this).attr('style', '');
+		}).on('drop', function(event) {
+			event.preventDefault();
+			$(this).attr('style', '');
+			_srcLength = $('img', this).attr('src').length;
+			if (_isPicked) {
+				_place = this;
+				placePiece();
+			}
+		});
+	};
+	this.getMoves = function() {
+		var _log = '';
+		for (var i in _moveList) {
+			var move = _moveList[i];
+			if (i % 2 == 0) {
+				_log += '' + (i / 2 + 1) + '.' + '<span>';
+				_log += (((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to);
+				_log += '</span>';
+			} else {
+				_log += '...' + '<span>';
+				_log += (((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
+				_log += '</span>';
+			}
+		}
+		$('.moves').remove();
+		$('<div>').addClass('moves').html(_log).appendTo(DOMNode);
+		return {
+			objects: _moveList,
+			notation: _log
+		};
+	};
 	this.depopulate = function() {
 		$('td').each(function(index, element) {
 			$('img', element).attr('src', '').hide();
@@ -63,111 +181,6 @@ function Chess() {
 	this.hide = function() {
 		$('table', DOMNode).hide();
 	};
-	this.validateMove = function(moveObj) {
-		return true;
-	};
-	this.play = function() {
-		var me = this,
-			_pick,
-			_place,
-			_move = {
-				from: null,
-				to: null,
-				piece: null,
-				capture: null
-			};
-
-		function click() {
-			var _srcLength = $('img', this).attr('src').length;
-			if (_isPicked) {
-				_place = this;
-				_move.to = $(_place).attr('class');
-				_move.piece = $('img', _pick).attr('src')[15];
-				_move.capture = (_srcLength === 0) ? false : true;
-				_move.color = $('img', _pick).attr('src')[14];
-				if (me.validateMove(_move)) {
-					_isPicked = false;
-					_pick.style.backgroundColor = '';
-					$('img', _place).attr('src', $('img', _pick).attr('src')).show();
-					if (_place !== _pick) {
-						_moveList.push({
-							from: _move.from,
-							to: _move.to,
-							piece: _move.piece,
-							color: _move.color,
-							capture: _move.capture
-						});
-						$('img', _pick).attr('src', '').hide();
-						me.getMoves();
-					}
-				}
-			} else if (!_isPicked && _srcLength !== 0) {
-				_isPicked = true;
-				_pick = this;
-				_move.from = $(_pick).attr('class');
-				_pick.style.backgroundColor = 'silver';
-			}
-		}
-		$('td', DOMNode).on('click', click);
-		$('td', DOMNode).on('dragstart', function(event) {
-			var _srcLength = $('img', this).attr('src').length;
-			if (!_isPicked && _srcLength !== 0) {
-				_isPicked = true;
-				_pick = this;
-				_move.from = $(_pick).attr('class');
-				_pick.style.backgroundColor = 'silver';
-			}
-		}).on('dragover', function(event) {
-			event.preventDefault();
-			$(this).attr('style', 'background-color:silver');
-		}).on('dragleave', function(event) {
-			event.preventDefault();
-			$(this).attr('style', '');
-		}).on('drop', function(event) {
-			$(this).attr('style', '');
-			var _srcLength = $('img', this).attr('src').length;
-			if (_isPicked) {
-				_place = this;
-				_move.to = $(_place).attr('class');
-				_move.piece = $('img', _pick).attr('src')[15];
-				_move.capture = (_srcLength === 0) ? false : true;
-				_move.color = $('img', _pick).attr('src')[14];
-				if (me.validateMove(_move)) {
-					_isPicked = false;
-					_pick.style.backgroundColor = '';
-					$('img', _place).attr('src', $('img', _pick).attr('src')).show();
-					if (_place !== _pick) {
-						_moveList.push({
-							from: _move.from,
-							to: _move.to,
-							piece: _move.piece,
-							color: _move.color,
-							capture: _move.capture
-						});
-						$('img', _pick).attr('src', '').hide();
-						me.getMoves();
-					}
-				}
-			}
-		});
-	};
-	this.getMoves = function() {
-		var _log = '';
-		for (var i in _moveList) {
-			var move = _moveList[i];
-			if (i % 2 == 0) {
-				_log += ((i / 2 + 1) + '.' + ((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '...');
-			} else {
-				_log += (((move.color === 'W') ? 'White ' : 'Black ') + move.piece + ((move.capture === true) ? ' captures ' : ' moves ') + move.from + ' to ' + move.to + '</br>');
-			}
-		}
-		$('.moves').remove();
-		$('<span>').addClass('moves').html(_log).appendTo(DOMNode);
-		return {
-			objects: _moveList,
-			notation: _log
-		};
-	};
 	this.initialize = function() {
 		this.makeBoard(document.body);
 		this.show();
@@ -176,3 +189,4 @@ function Chess() {
 	};
 }
 c = new Chess();
+c.initialize();
