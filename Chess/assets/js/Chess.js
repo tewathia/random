@@ -54,18 +54,27 @@ function Chess() {
 	};
 	this.validateMove = function(moveObj, type) {
 		var isValidArray = [];
+		var invalidMsgArray = [];
+		var falseIndex;
 
 		function pieceMovementValidation(piece) {
 			var isValid = true;
 			isValidArray.push(isValid);
+			invalidMsgArray.push(piece + 'cannot move there');
 		}
 		function moveColorValidation() {
 			var isValid = ((moveObj.color === 'W') ? 0 : 1) === (1 - moveObj.toMove);
 			isValidArray.push(isValid);
+			invalidMsgArray.push("It's not your turn");
 		}
 		pieceMovementValidation(moveObj.piece);
 		moveColorValidation();
-		return (isValidArray.indexOf(false) === -1);
+		falseIndex = (isValidArray.indexOf(false));
+		if (falseIndex !== -1) {
+			var msg = invalidMsgArray[falseIndex];
+			alert(msg);
+		}
+		return (falseIndex === -1);
 	};
 	this.play = function() {
 		var me = this,
