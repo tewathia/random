@@ -124,6 +124,7 @@ function Chess() {
 			event.preventDefault();
 			$(this).attr('style', '');
 		}).on('drop', function(event) {
+			$(this).attr('style', '');
 			var _srcLength = $('img', this).attr('src').length;
 			if (_isPicked) {
 				_place = this;
