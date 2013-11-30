@@ -114,7 +114,6 @@ var quant = {
 						_cows++;
 						if (_tBGIndex === _gIndex) {
 							_bulls++;
-							_cows--;
 						}
 					}
 				}
@@ -142,7 +141,6 @@ var quant = {
 	Sudoku: function(ProblemArray) {
 		var problem = [];
 		this.fillerArray = [];
-		this.complexity = 81;
 		for (var rowInput in ProblemArray) {
 			var row = [];
 			var rowArray = ProblemArray[rowInput];
@@ -152,9 +150,6 @@ var quant = {
 					value: cell,
 					state: (cell === 0 ? 'Blank' : 'Given')
 				};
-				if (cellObj.state == 'Given') {
-					this.complexity--;
-				}
 				row.push(cellObj);
 				// console.log(cellObj);
 			}
@@ -271,29 +266,16 @@ var quant = {
 				// console.log(attempt[i]);
 			}
 			var isSolved = this.checkSolution(attempt);
-			var maxStackSize = 5000;
 			// console.log(isSolved); 
 			if (isSolved) {
 				var solution = attempt;
-				var totalIterations = this.iterations + this.stackCount * maxStackSize;
 				this.show();
-				console.log('!Solved!', 'stack', this.stackCount, 'iterations', totalIterations, solution);
+				console.log('!Solved!', 'stack', this.stackCount, 'iterations', this.iterations + this.stackCount * 9630, solution);
 				this.iterations = 0;
 				this.stackCount = 0;
-				var lSIC = JSON.parse(localStorage.getItem('SudokuIterations')) || {};
-				lSIC['C' + this.complexity] = lSIC['C' + this.complexity] || [];
-				lSIC['C' + this.complexity].push(totalIterations);
-				localStorage.setItem('SudokuIterations', JSON.stringify(lSIC));
-				var that = this;
-				if (lSIC['C' + this.complexity].length < 100) {
-					console.log(lSIC['C' + this.complexity].length);
-					setTimeout(function() {
-						that.solve();
-					}, 1)
-				}
 			} else {
 				// console.log('!Not Solved');
-				if (this.iterations === maxStackSize) {
+				if (this.iterations === 9630) {
 					var that = this;
 					setTimeout(function() {
 						that.show();
@@ -306,9 +288,16 @@ var quant = {
 				}
 			}
 		}
-		this.getStats = function() {
-			return JSON.parse(localStorage.getItem('SudokuIterations'));
-		}
 		this.show();
+	},
+
+	luhn: function(n) {
+		var n = (n + '').split('');
+		var checksum = 0;
+		for (var i = 0; i < n.length; i++) {
+			var c = n.length - 1 - i;
+			checksum += (n[i] == 9) ? 9 : ((n[i] * (1 + c % 2)) % 9);
+		}
+		return (checksum % 10 === 0);
 	}
 };
