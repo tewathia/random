@@ -1,5 +1,6 @@
 table {
 	border: 40px solid black;
+	margin: 0 auto;
 }
 td {
 	margin: 0px;

@@ -14,6 +14,7 @@ function Chess() {
 			board.append(row);
 		}
 		board.appendTo($(DOMNode));
+		return this;
 	};
 	this.populate = function() {
 		$('tr:nth-of-type(2)>td>img').each(function(index, element) {
@@ -51,23 +52,26 @@ function Chess() {
 		$('tr:nth-of-type(3)>td, tr:nth-of-type(4)>td, tr:nth-of-type(5)>td, tr:nth-of-type(6)>td').each(function(index, element) {
 			$('img', element).attr('src', '').hide();
 		});
+		return this;
 	};
 	this.validateMove = function(moveObj, type) {
 		var isValidArray = [];
 		var invalidMsgArray = [];
 		var falseIndex;
 
-		function pieceMovementValidation(piece) {
+		function pieceMovementValidation() {
+			var piece = moveObj.piece;
 			var isValid = true;
 			isValidArray.push(isValid);
 			invalidMsgArray.push(piece + 'cannot move there');
 		}
+
 		function moveColorValidation() {
 			var isValid = ((moveObj.color === 'W') ? 0 : 1) === (1 - moveObj.toMove);
 			isValidArray.push(isValid);
 			invalidMsgArray.push("It's not your turn");
 		}
-		pieceMovementValidation(moveObj.piece);
+		pieceMovementValidation();
 		moveColorValidation();
 		falseIndex = (isValidArray.indexOf(false));
 		if (falseIndex !== -1) {
@@ -157,6 +161,7 @@ function Chess() {
 				placePiece();
 			}
 		});
+		return this;
 	};
 	this.getMoves = function() {
 		var _log = '';
@@ -183,19 +188,21 @@ function Chess() {
 		$('td').each(function(index, element) {
 			$('img', element).attr('src', '').hide();
 		});
+		return this;
 	};
 	this.show = function() {
 		$('table', DOMNode).show();
+		return this;
 	};
 	this.hide = function() {
 		$('table', DOMNode).hide();
+		return this;
 	};
 	this.initialize = function() {
-		this.makeBoard(document.body);
-		this.show();
-		this.populate();
-		this.play();
+		this.makeBoard(document.body).populate().play();
+		return this;
 	};
 }
+
 c = new Chess();
-c.initialize();
+// c.initialize().hide();
